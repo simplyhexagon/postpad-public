@@ -7,7 +7,7 @@
     if($details["username"] == "Error"){
 ?>
 <div class="col-xs-12 col-lg-7" id="posts">
-    <div class="card postpad-userpost-container textColorOverride">
+    <div class="card postpad-container textColorOverride">
         <div class="card-header">
             <div class="row">
                 <div class="col-12">
@@ -30,7 +30,7 @@
     if($details["username"] == "Empty"){
 ?>
 <div class="col-xs-12 col-lg-7" id="posts">
-    <div class="card postpad-userpost-container textColorOverride">
+    <div class="card postpad-container textColorOverride">
         <div class="card-header">
             <div class="row">
                 <div class="col-12">
@@ -53,7 +53,7 @@
     if($details["privateprofile"] == 1){
 ?>
 <div class="col-xs-12 col-lg-7" id="posts">
-        <div class="card postpad-userpost-container textColorOverride">
+        <div class="card postpad-container textColorOverride">
             <div class="card-header">
                 <div class="row">
                     <div class="col-2">
@@ -88,7 +88,7 @@
         $counterdata = $model->getprofilecounters($details["username"]);
 ?>
 <div class="col-xs-12 col-lg-7" id="posts">
-        <div class="card postpad-userpost-container textColorOverride">
+        <div class="card postpad-container textColorOverride">
             <div class="card-header">
                 <div class="row">
                     <div class="col-2">
@@ -146,6 +146,7 @@
         </div>
     </div>
 <script type="text/javascript" src="/public/res/script/postload.js"></script>
+<script src="/public/res/script/blurLogic.js"></script>
 <?php
     }
 ?>

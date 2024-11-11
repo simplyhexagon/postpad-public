@@ -1,12 +1,4 @@
   </div>
-
-    <!--hr>
-
-    <div class="row justify-content-center">
-        <div class="col-xs-12 col-lg-4 text-center">
-            <button class="btn PostPadLightElement" onclick="fillPosts()">Load more posts</button>
-        </div>
-    </div-->
   </div>
 </section>
 

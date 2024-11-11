@@ -6,7 +6,7 @@
 ?>
 
 <div class="col-xs-12 col-lg-7">
-    <div class="card postpad-userpost-container textColorOverride">
+    <div class="card postpad-container textColorOverride">
         <div class="card-body">
             The post you're looking for doesn't exist
         </div>
@@ -21,7 +21,7 @@ $posttime = date('Y-m-d H:i:s', $postcontent['timestamp']);
 if($postcontent["reply_to"] == NULL){
 ?>
 <div class="col-xs-12 col-lg-7">
-    <div class="card postpad-userpost-container textColorOverride">
+    <div class="card postpad-container textColorOverride">
         <div class="card-header">
             <h4>Post by <?php echo $postcontent['displayname']; ?></h4>
         </div>
@@ -129,7 +129,7 @@ else{
 ?>
 
 <div class="col-xs-12 col-lg-7">
-    <div class="card postpad-userpost-container textColorOverride">
+    <div class="card postpad-container textColorOverride">
         <div class="card-header">
             <h4>Thread</h4>
         </div>

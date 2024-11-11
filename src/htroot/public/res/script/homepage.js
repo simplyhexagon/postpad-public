@@ -1,6 +1,9 @@
 function newpost(){
     var postcontent = document.getElementById("postpad-userpost").value;
-    
+    var checkbox_cw_general = document.getElementById("cw-general-check").checked;
+    var checkbox_cw_nsfw = document.getElementById("cw-nsfw-check").checked;
+    var cw_general = (checkbox_cw_general) ? 1 : 0;
+    var cw_nsfw = (checkbox_cw_nsfw) ? 1 : 0;
 
     //Removing whitespaces
     var temp = postcontent.trim();
@@ -30,7 +33,7 @@ function newpost(){
             }
         };
 
-        var params = "action=newpost&postcontent="+encodeURIComponent(postcontent);
+        var params = "action=newpost&cw_general="+encodeURIComponent(cw_general)+"&cw_nsfw="+encodeURIComponent(cw_nsfw)+"&postcontent="+encodeURIComponent(postcontent);
         xhr.open("POST", "/main/postmanager", true);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.send(params);

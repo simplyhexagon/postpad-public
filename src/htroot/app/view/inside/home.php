@@ -11,7 +11,7 @@
 
             <div class="col-xs-12 col-lg-7" id="posts">
             <!-- The div the user can post in -->
-                <div class="card postpad-userpost-container">
+                <div class="card postpad-container">
                     <div class="card-header">
                         <!-- Input selectors -->
                         <ul class="nav nav-tabs" id="inputTabs" role="tablist">
@@ -28,7 +28,7 @@
                             <div class="tab-pane fade show active" id="basicInputTab" aria-labelledby="basicInput">
                                 <textarea id="postpad-userpost" class="postpad-userpost form-control" maxlength="400" oninput="countCharacters()" placeholder="<?php echo userpostplaceholder(); ?>"></textarea>
                                 <span id="userpost-miscelements">
-                                    <small id="charcount"></small>
+                                    <small class="charcount" id="charcount"></small>
                                     <button id="sendButton" class="btn PostPadLightElement" style="float: right;" onclick="newpost()">Post!</button>
                                 </span>
                             </div>
@@ -39,9 +39,23 @@
                                     <div id="quillEditor">
                                     </div>
                                     <br>
-                                    <button id="sendButtonQuill" class="btn PostPadLightElement" style="float: right;" onclick="newpostquill()">Post!</button>
+                                    <span id="quillpost-miscelements">
+                                        <small class="charcount" id="charCountQuill"></small>
+                                        <button id="sendButtonQuill" class="btn PostPadLightElement" style="float: right;" onclick="newpostquill()">Post!</button>
+                                    </span>
+                                    
                             </div>
                             <!-- Advanced input tab END -->
+                        </div>
+                        <div>
+                            <!-- Content Warning checkboxes -->
+                            <div class="cwcheckbox textColorOverride" id="cw-general">
+                                <input type="checkbox" class="cwcheck" name="cw-general-check" id="cw-general-check">
+                                <label class="cwchecklabel" for="cw-general-check" alt="General Content Warning" title="General Content Warning"><b>CW</b></label>
+
+                                <input type="checkbox" class="cwcheck" name="cw-nsfw-check" id="cw-nsfw-check">
+                                <label class="cwchecklabel" for="cw-nsfw-check" alt="General Content Warning" title="Not Safe For Work Warning"><b>NSFW</b></label>
+                            </div>
                         </div>
                         
                     </div>
@@ -77,6 +91,7 @@
 <script src="/public/res/script/homepage.js"></script>
 <script src="/public/res/script/postload.js"></script>
 <script src="/public/res/script/announcement.js"></script>
+<script src="/public/res/script/blurLogic.js"></script>
 
 <script>
     //This functionality is only available on the home page so it has been moved here
@@ -96,7 +111,6 @@
         
     }
     countCharacters();
-
 
     const userpost = document.getElementById("postpad-userpost");
     var initialBoxHeight = userpost.clientHeight;

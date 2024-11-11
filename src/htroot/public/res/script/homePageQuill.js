@@ -1,18 +1,41 @@
 //Quill stuff here
     //Initialise Quill editor on page load
     var customPlaceholder = document.getElementById("postpad-userpost").placeholder;
+    var charCountQuill = document.getElementById("charCountQuill");
+    const maxCharCount = 4000;
+
     var quill = new Quill('#quillEditor', {
         placeholder: customPlaceholder,
         theme: 'snow'
     });
 
+    var content = null;
+    var rawContent = null;
+    var insertThing = null;
+    var postContent = null;
+
+    quill.on('text-change', function(delta, oldDelta, source){
+        if(source == "user"){
+            content = quill.getContents();
+            insertThing = content.ops[0].insert;
+
+            charCountQuill.innerHTML = insertThing.length + "/" + maxCharCount;
+        }
+    });
+
     function newpostquill(){
-        var content = quill.getContents();
-        var rawContent = document.getElementsByClassName('ql-editor')[0].innerHTML;
+        var checkbox_cw_general = document.getElementById("cw-general-check").checked;
+        var checkbox_cw_nsfw = document.getElementById("cw-nsfw-check").checked;
+        var cw_general = (checkbox_cw_general) ? 1 : 0;
+        var cw_nsfw = (checkbox_cw_nsfw) ? 1 : 0;
 
-        var insertThing = content.ops[0].insert
 
-        var postcontent = rawContent;
+        content = quill.getContents();
+        rawContent = document.getElementsByClassName('ql-editor')[0].innerHTML;
+
+        insertThing = content.ops[0].insert
+
+        postcontent = rawContent;
         
         //Removing whitespaces
         var temp = postcontent.trim();
@@ -21,8 +44,6 @@
         //It will become "" if the post only contains whitespaces
         postcontent = temp;
         insertThing = temp2;
-
-        console.log("Post content: "+postcontent);
 
         //Checking for "<p><br></p>" is needed bc the "empty" Quill field
         //contains these characters
@@ -53,7 +74,7 @@
                 }
             };
 
-            var params = "action=newpostquill&postcontent="+encodeURIComponent(postcontent);
+            var params = "action=newpostquill&cw_general="+encodeURIComponent(cw_general)+"&cw_nsfw="+encodeURIComponent(cw_nsfw)+"&postcontent="+encodeURIComponent(postcontent);
             xhr.open("POST", "/main/postmanager", true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.send(params);

@@ -11,6 +11,7 @@ body a{
 
 .postpad-cardBody{
   background-color: #05010f !important;
+  position: relative;
 }
 
 textarea{
@@ -26,7 +27,7 @@ textarea{
   color: #c8c7c9 !important;
 }
 
-#charcount{
+.charcount{
   color: #c8c7c9 !important;
 }
 
@@ -152,13 +153,21 @@ textarea{
     right: 2vw;
   }
 
-  .postpad-userpost-container{
+  .postpad-container{
+    margin-left: 8vw;
+  }
+
+  .postpad-pretty-container{
     margin-left: 8vw;
   }
 
   .settingspfp{
     max-width: 3vw;
     border-radius: 50%;
+  }
+
+  .profilecounters{
+    width: 50%;
   }
 }
 
@@ -167,6 +176,10 @@ textarea{
   .settingspfp{
     max-width: 12vw;
     border-radius: 50%;
+  }
+
+  .profilecounters{
+    width: 100%;
   }
 }
 
@@ -186,17 +199,26 @@ textarea{
   color: #c8c7c9;
   background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
-  border: 1px solid #88888850;
+  border-top: 1px solid #88888850;
+  /*border-bottom: 1px solid #88888850;*/
   border-radius: 0px !important;
 }
 
-.postpad-userpost-container{
+.postpad-container{
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0.5);
   border: 1px solid #88888850;
   border-radius: 0px !important;
-  
 
+  overflow: hidden;
+  transition: height 0.5s ease;
+}
+
+.postpad-pretty-container{
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 5px !important;
+  
   overflow: hidden;
   transition: height 0.5s ease;
 }
@@ -262,9 +284,7 @@ button.nav-link{
   color: #c8c7c9 !important;
 }
 
-.profilecounters{
-  width: 50%;
-}
+
 
 .profilecounters tr th{
   padding-left: 1%;
@@ -294,6 +314,59 @@ button.nav-link{
 
 #postpad-announcement{
   display: none;
+}
+
+.cwcheck{
+  opacity: 0;
+}
+
+.cwcheck:checked + .cwchecklabel{
+  color: blue;
+}
+
+.cwchecklabel{
+  cursor: pointer;
+}
+
+@keyframes fadeOutAnimation {
+  0% {
+      opacity: 1;
+  }
+  100% {
+      opacity: 0;
+   }
+}
+
+.postpad-blurredPostContainer{
+  position: relative !important;
+}
+
+.postpad-blurredPost{
+  position: relative;
+  z-index: 1;
+}
+
+.postpad-blurOverlay{
+  position: absolute;
+  top: 0;
+  left: 0;
+  
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 2;
+}
+
+.postpad-overlayFadeOut{
+  animation: fadeOutAnimation ease 0.2s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+.inlineSearchButton{
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 

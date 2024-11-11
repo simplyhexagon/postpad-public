@@ -1,4 +1,3 @@
-
 <section class="content">
     <div class="container">
       <div class="row">
@@ -14,6 +13,8 @@
                 </div>
                 <div class="card-body">
                     <label for="email">E-mail address</label>
+                    <input type="text" name="emailconfirm" id="emailconfirm" class="form-control"><br>
+                    <label for="emailconfirm">Confirm e-mail address</label>
                     <input type="text" name="email" id="email" class="form-control"><br>
                     <label for="username">Username</label>
                     <input type="text" name="username" id="username" class="form-control">
@@ -24,6 +25,8 @@
                     <br>
                     <label for="password">Password</label>
                     <input type="password" name="password" id="password" class="form-control" pattern="[^\s]">
+                    <label for="confirmpassword">Confirm password</label>
+                    <input type="password" name="confirmpassword" id="confirmpassword" class="form-control" pattern="[^\s]">
                     <small>
                         <i>
                             The password must contain
@@ -36,6 +39,17 @@
                         </i>
                         Password strength: <span id="passwordstrength"></span>
                     </small>
+                    <?php
+                        if(INVITE_ONLY){
+                    ?>
+                    <hr>
+                    <p><i>The website currently operates in "Invite only" mode</i></p>
+                    <label for="invitecode">Invite code</label>
+                    <input class="form-control" type="text" name="invitecode" id="invitecode" placeholder="A1A1A-B2B2B-C3C3C-D4D4D-E5E5E" required>
+                    <?php
+                        }
+                    ?>
+                    <p></p>
                 </div>
                 <div class="card-footer">
                     <i><small>By signing up you agree to our <a href="/documents/tos" target="_blank" style="color: ">Terms of Service</a>,  <a href="/documents/privacy" target="_blank">Privacy Policy</a> and <a href="/documents/guidelines">Community Guidelines</a></small></i>
@@ -135,10 +149,22 @@
     //Signup script
     function signup(){
         var password = document.getElementById("password").value;
+        var confirmpassword = document.getElementById("confirmpassword").value;
+        if(password !== confirmpassword){
+            alert("Passwords don't match!");
+            return;
+        }
+
         //Checking for whitespace
         var passWhiteSpace = password.match(/[\s]/g);
+
         if(passWhiteSpace == null || passWhiteSpace == undefined){
             var email = document.getElementById("email").value;
+            var emailconfirm = document.getElementById("emailconfirm").value;
+            if(email !== emailconfirm){
+                alert("E-mail addresses don't match");
+                return;
+            }
 
             var username = document.getElementById("username").value;
             //Removing whitespace

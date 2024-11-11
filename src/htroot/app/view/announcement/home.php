@@ -12,7 +12,7 @@ $formattedTime = date("Y-m-d H:i:s", $values["timestamp"]);
 ?>
 
 <div class="col-xs-12 col-lg-7">
-    <div class="card postpad-userpost-container textColorOverride">
+    <div class="card postpad-container textColorOverride">
         <div class="card-header">
             <h1>Announcement</h1>
         </div>

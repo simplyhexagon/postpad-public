@@ -12,7 +12,7 @@
     <script src="/public/res/script/popper.min.js"></script>
 
     <!-- Bootstrap 5 -->
-    <link rel="stylesheet" href="/public/dist/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/public/dist/bootstrap/css/bootstrap.min.css">
     <script src="/public/dist/bootstrap/js/bootstrap.min.js"></script>
 
     <!-- FontAwesome 6.4.2 -->
@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="/public/dist/fontawesome/css/solid.min.css">
     <script src="/public/dist/fontawesome/js/fontawesome.min.js"></script>
 
+    <!--link rel="stylesheet" href="/public/res/style.min.css"-->
     <link rel="stylesheet" href="/public/res/style.css">
     
     <title><?php echo APP_NAME . ' - ' . ACTIVE_PAGE; ?></title>
@@ -55,6 +56,9 @@
             <?php
                 }
             ?>
+        </li>
+        <li class="nav-item">
+            <a href="/search" class="nav-link flex-fill"><i class="fa-solid fa-magnifying-glass"></i></a>
         </li>
         <li class="nav-item">
             <a class="nav-link flex-fill" href="/settings"><i class="fa-solid fa-user-gear"></i></a>

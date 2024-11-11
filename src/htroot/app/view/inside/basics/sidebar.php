@@ -30,6 +30,11 @@
                     ?>
                 </li>
                 <li>
+                    <a href="/search">
+                        <h5><i class="fa-solid fa-magnifying-glass"></i> Search</h5>
+                    </a>
+                </li>
+                <li>
                     <a href="/settings">
                         <h5><i class="fa-solid fa-user-gear"></i> Settings</h5>
                     </a>

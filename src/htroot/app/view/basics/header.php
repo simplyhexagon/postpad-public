@@ -12,7 +12,7 @@
     <script src="/public/res/script/popper.min.js"></script>
 
     <!-- Bootstrap 5 -->
-    <link rel="stylesheet" href="/public/dist/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/public/dist/bootstrap/css/bootstrap.min.css">
     <script src="/public/dist/bootstrap/js/bootstrap.min.js"></script>
     
     <!-- FontAwesome 6.4.2 -->

@@ -17,7 +17,7 @@
                 include "app/system/connect.php";
 
                 //id, type, posting_user, sharecount, reblogs, views, timestamp
-                $postquerystring = "SELECT id, type, posting_user, sharecount, reblogs, views, timestamp FROM posts WHERE id > 0 AND reply_to IS NULL ORDER BY id DESC LIMIT {$maxvalue} OFFSET {$offset} ";
+                $postquerystring = "SELECT id, type, posting_user, sharecount, reblogs, views, timestamp, cw_general, cw_nsfw FROM posts WHERE id > 0 AND reply_to IS NULL ORDER BY id DESC LIMIT {$maxvalue} OFFSET {$offset} ";
                 //Checking if we are browsing a user's /user/* site
                 //If so, get their user ID
                 if(isset($_POST['user'])){
@@ -27,7 +27,7 @@
                     $result = $userq->get_result();
                     $user = $result->fetch_assoc();
                     
-                    $postquerystring = "SELECT id, type, posting_user, sharecount, reblogs, views, timestamp FROM posts WHERE id > 0 AND posting_user = {$user["id"]} ORDER BY id DESC LIMIT {$maxvalue} OFFSET {$offset} ";
+                    $postquerystring = "SELECT id, type, posting_user, sharecount, reblogs, views, timestamp, cw_general, cw_nsfw FROM posts WHERE id > 0 AND posting_user = {$user["id"]} ORDER BY id DESC LIMIT {$maxvalue} OFFSET {$offset} ";
                 }
 
                 if($postq = $conn->query($postquerystring)){
@@ -43,12 +43,13 @@
                             $userq = $conn->query("SELECT id, username, displayname, isuserstaff, isuserverified, isuserdeveloper, isuserpatron, pfppath FROM users WHERE id = {$uid}");
                             $userdata = $userq->fetch_assoc();
 
-                            $postcontent = $postqr['id'];
-                            $commentcount = $this->getcommentcount($postcontent);
+                            $postid = $postqr['id'];
+
+                            $commentcount = $this->getcommentcount($postid);
                             $posttime = date('Y-m-d H:i:s', $postqr['timestamp']);
 
                             //Query the contents of the post
-                            $postcontentq = $conn->query("SELECT content FROM postcontent WHERE postid = {$postcontent}");
+                            $postcontentq = $conn->query("SELECT content FROM postcontent WHERE postid = {$postid}");
                             $realpostcontent = $postcontentq->fetch_assoc()['content'];
 
                             //Look for hyperlink elements, add the "hyperlinkOverride" class to them
@@ -62,7 +63,6 @@
                             //COMPOSING THE POST
                             //This is the post itself
                             echo "
-                            <a href='/post/{$postcontent}'>
                                 <div class='card postpad-post'>
                                     <div class='card-header'>
                                         <div class='row'>
@@ -97,16 +97,58 @@
                                                 </table>
                                             </div> 
                                         </div>
-                                    </div>
-                                    <div class='card-body postpad-cardBody'>
-                                        <hr>
-                                        <div class='postpad-text'>
-                                            <p>
-                                            {$realpostcontent}
-                                            </p>
+                                    </div>";
+                                    if($postqr["cw_general"] == 0 && $postqr["cw_nsfw"] == 0)
+                                    {
+                                        echo "
+                                        <a href='/post/{$postid}'>
+                                        <div class='card-body postpad-cardBody'>
+                                            <hr>
+                                            <div class='postpad-text'>
+                                                <p>
+                                                {$realpostcontent}
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class='card-footer'>
+                                        </a>";
+                                    }
+                                    else if($postqr["cw_nsfw"] == 1 && $postqr["cw_general"] == 0){
+                                        echo "<div class='card-body postpad-cardBody postpad-blurredPostContainer'>
+                                            <hr>
+                                            <div class='postpad-text postpad-blurredPost'>
+                                                <a href='/post/{$postid}'>
+                                                    <p>
+                                                    {$realpostcontent}
+                                                    </p>
+                                                </a>  
+                                            </div>
+                                            <div id='postBlurOverlay{$postid}' class='postpad-text postpad-blurOverlay'>
+                                                <div class='postBlurOverlayContent text-center justify-content-center'>
+                                                    <p><i><strong>This post was marked as Not Safe For Work</strong></i></p>
+                                                    <p><button onclick='unblurPost({$postid})' class='btn btn-sm btn-secondary'>Show post content</button></p>
+                                                </div>
+                                            </div>
+                                        </div>";
+                                    }
+                                    else{
+                                        echo "<div class='card-body postpad-cardBody postpad-blurredPostContainer'>
+                                            <hr>
+                                            <div class='postpad-text postpad-blurredPost'>
+                                                <a href='/post/{$postid}'>
+                                                    <p>
+                                                    {$realpostcontent}
+                                                    </p>
+                                                </a>  
+                                            </div>
+                                            <div id='postBlurOverlay{$postid}' class='postpad-text postpad-blurOverlay'>
+                                                <div class='postBlurOverlayContent text-center justify-content-center'>
+                                                    <p><i><strong>This post has a content warning</strong></i></p>
+                                                    <p><button onclick='unblurPost({$postid})' class='btn btn-sm btn-secondary'>Show post content</button></p>
+                                                </div>
+                                            </div>
+                                        </div>";
+                                    }
+                                    echo "<div class='card-footer'>
                                         <div class='row'>
                                             <div class='col-xs-12 col-lg-12 text-left'>
                                                 <small><i>{$posttime} GMT</i></small>
@@ -117,7 +159,7 @@
 
                                         <div class='row text-center'>
                                             <div class='col-3'>
-                                                <a href='/post/{$postcontent}#comments'><i class='fa-solid fa-comment'></i> {$commentcount}</a>
+                                                <a href='/post/{$postid}#comments'><i class='fa-solid fa-comment'></i> {$commentcount}</a>
                                             </div>
                                             <div class='col-3'>
                                                 <i class='fa-solid fa-retweet'></i>
@@ -126,12 +168,11 @@
                                                 <i class='fa-solid fa-heart'></i>
                                             </div>
                                             <div class='col-3'>
-                                                <i id='sharebutton{$postcontent}' data-toggle='tooltip' data-placement='top' title='Copy Link to Clipboard' onclick='share({$postcontent});' class='fa-solid fa-share-nodes sharebutton'></i>
+                                                <i id='sharebutton{$postid}' data-toggle='tooltip' data-placement='top' title='Copy Link to Clipboard' onclick='share({$postid});' class='fa-solid fa-share-nodes sharebutton'></i>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </a>
                             ";
 
                         }
@@ -256,9 +297,16 @@
 
             $userid = $_COOKIE['postpad_uid'];
             $postcontent = $_POST['postcontent'];
-            $posttype = 0; //Until further development, all posts are short posts, thus the posttype var is always 0
 
-            //Removing forbidden content
+            //If we're posting through the Quill input, it should be posttype 1, since it is a long post.
+            //We'll handle loading long posts somewhere else
+            $posttype = ($quill) ? 1 : 0;
+
+            $cw_general = $_POST["cw_general"];
+            $cw_nsfw = $_POST["cw_nsfw"];
+
+
+            //Removing JavaScript "injection" with the <script> tags and everything in between
             $postcontent = preg_replace("/<script\b[^>]*>(.*?)<\/script>/is", "", $postcontent);
 
             //Checking if we still have content in the post, even after removing <script>
@@ -274,8 +322,8 @@
             }
 
             $timestamp = time();
-            $newpostq = $conn->prepare("INSERT INTO posts (type, posting_user, timestamp) VALUES (?, ?, ?)");
-            $newpostq->bind_param("iii", $posttype, $userid, $timestamp);
+            $newpostq = $conn->prepare("INSERT INTO posts (type, posting_user, timestamp, cw_general, cw_nsfw) VALUES (?, ?, ?, ?, ?)");
+            $newpostq->bind_param("iiiii", $posttype, $userid, $timestamp, $cw_general, $cw_nsfw);
 
             if($newpostq->execute()){
                 //We managed to create the post header, hurray!
