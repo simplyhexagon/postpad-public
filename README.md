@@ -19,8 +19,7 @@ This license, in short is as follows:
 
 *The project uses external libraries.*
 
-[Quill](https://github.com/slab/quill), by [slab](https://github.com/slab).
-Quill is distributed under the *BSD 3-Clause "New" or "Revised" License* which allows the following:
+[Quill](https://github.com/slab/quill), by [slab](https://github.com/slab) is distributed under the *BSD 3-Clause "New" or "Revised" License* which allows the following:
 - Commercial use
 - Modification
 - Distribution
@@ -28,27 +27,26 @@ Quill is distributed under the *BSD 3-Clause "New" or "Revised" License* which a
 
 See more in `LICENSE-Quilljs`
 
-[Bootstrap](https://github.com/twbs/bootstrap)
-Bootstrap uses the *"MIT License"* which allows the following:
+[Bootstrap](https://github.com/twbs/bootstrap) uses the *"MIT License"* which allows the following:
 - Commercial use
 - Modification
 - Distribution
 - Private use
 
-[FontAwesome](https://github.com/FortAwesome/Font-Awesome)
-FontAwesome uses a custom license, called *"Font Awesome Free License"*, which:
+
+[FontAwesome](https://github.com/FortAwesome/Font-Awesome) uses a [custom license](https://fontawesome.com/license/free), called *"Font Awesome Free License"*, which:
 - Allows commercial use
 - Requires attribution
-[Full Details](https://fontawesome.com/license/free)
 
-[otphp](https://github.com/Spomky-Labs/otphp)
-*Please note that this library is currently unused, but included in the code*
-*Path to plugin is* `/src/htroot/app/system/plugins/otphp`
-OTPHP uses the *"MIT License"* which allows the following:
+
+[otphp](https://github.com/Spomky-Labs/otphp) uses the *"MIT License"* which allows the following:
 - Commercial use
 - Modification
 - Distribution
 - Private use
+
+*Please note that `otphp` is currently unused, but included in the code*
+*Path to plugin is* `/src/htroot/app/system/plugins/otphp`
 
 ### External libraries
 *External libraries in the source tree can be found at:*

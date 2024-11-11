@@ -22,7 +22,7 @@ This license does not grant rights to:
 - Monetize the source code or any derivative works.
 - Use the project name or any branding associated with *PostPad* for promotional or commercial purposes without prior written consent from the Licensor.
 
-This license is subject to change at the discretion of the Licensor. Any changes will apply only to future distributions.
+This license is subject to change at the discretion of the Licensor. Any changes in the license will be applicable to past and future releases, third-party libraries excluded.
 
 For inquiries or permissions beyond the scope of this license, please contact *Balázs György Markgruber* at:
 - Discord: (at) simplyhexagon
