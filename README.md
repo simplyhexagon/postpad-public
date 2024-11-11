@@ -25,8 +25,6 @@ This license, in short is as follows:
 - Distribution
 - Private use
 
-See more in `LICENSE-Quilljs`
-
 [Bootstrap](https://github.com/twbs/bootstrap) uses the *"MIT License"* which allows the following:
 - Commercial use
 - Modification
