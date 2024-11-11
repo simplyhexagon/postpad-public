@@ -1,0 +1,309 @@
+body{
+    background-color: #10023b;
+    color: #c8c7c9 !important;
+    margin: 0;   
+}
+
+body a{
+  color: #c8c7c9 !important;
+  text-decoration: none !important;
+}
+
+.postpad-cardBody{
+  background-color: #05010f !important;
+}
+
+textarea{
+  resize: none;
+}
+
+.hyperlinkOverride{
+  color: #c8c7c9 !important;
+  text-decoration: underline !important;
+}
+
+.textColorOverride{
+  color: #c8c7c9 !important;
+}
+
+#charcount{
+  color: #c8c7c9 !important;
+}
+
+/* Defining fade animation for the entire page */
+@keyframes fadeInAnimation {
+  0% {
+      opacity: 0;
+  }
+  100% {
+      opacity: 1;
+   }
+}
+
+
+.content{
+  padding-top: 5vh;
+  padding-bottom: 5vh;
+  color: #c8c7c9 !important;
+
+  /* Animating the entire page */
+  animation: fadeInAnimation ease 1s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+
+.container{
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
+  max-width: 90vw !important;
+  color: #c8c7c9 !important;
+}
+
+.brandicon{
+    max-width: 5vh;
+}
+
+.customnavbar {
+  background-color: #413172;
+  width: 100%;
+}
+  
+.customnavbar a {
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding-left: 2vh;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.customnavbar a:hover{
+  color: #8a8a8a;
+}
+
+@media (max-width: 991px) {
+  .d-md-none {
+    display: block !important;
+  }
+}
+
+.customDropdownMenu{
+  background-color: #10023b;
+  color: #c8c7c9 !important;
+}
+
+.transparentbg{
+  color: #c8c7c9;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.transparentbg a{
+  text-decoration: none;
+  color: #c8c7c9;
+}
+
+
+.PostPadDarkElement{
+  color: #c8c7c9;
+  background-color: #10023b;
+}
+
+.PostPadDarkElement:hover{
+  color: #8a8a8a
+}
+
+.PostPadLightElement{
+  color: #c8c7c9;
+  background-color: #413172;
+}
+
+.PostPadLightElement:hover{
+  color: #8a8a8a
+}
+
+.modal-content{
+  color: #c8c7c9;
+  background-color: #10023b !important;
+}
+
+.sidebarpfp{
+  max-width: 3vw;
+  border-radius: 50%;
+}
+
+@media(min-width:992px){
+  .stickysidebar{
+    position: fixed;
+    top: auto;
+    left: 1vw;
+    right: 1vw;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .stickysidebar:first-child{
+    left: 2vw;
+    z-index: 1;
+  }
+
+  .stickysidebar:last-child{
+    left: unset;
+    right: 2vw;
+  }
+
+  .postpad-userpost-container{
+    margin-left: 8vw;
+  }
+
+  .settingspfp{
+    max-width: 3vw;
+    border-radius: 50%;
+  }
+}
+
+
+@media(max-width:991px){
+  .settingspfp{
+    max-width: 12vw;
+    border-radius: 50%;
+  }
+}
+
+
+/* # characters in the legal documents */
+.marks{
+  color: rgba(200, 200, 200, 0.5);
+  text-decoration: none;
+}
+.marks:hover{
+  color: rgba(200, 200, 200, 1);
+}
+
+
+.postpad-post{
+  overflow: hidden;
+  color: #c8c7c9;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  border: 1px solid #88888850;
+  border-radius: 0px !important;
+}
+
+.postpad-userpost-container{
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid #88888850;
+  border-radius: 0px !important;
+  
+
+  overflow: hidden;
+  transition: height 0.5s ease;
+}
+
+.postpad-userpost{
+  border-radius: 5px;
+  border: 2px solid #ccc;
+  padding: 10px;
+  font-size: 16px;
+  width: 100%;
+  margin-bottom: 10px;
+  background-color: #00000050;
+  color: #ccc;
+}
+
+.postpad-userpost:focus{
+  border-color: #413172;
+  box-shadow: 0 0 16px 0 #594888;
+  outline: none;
+}
+
+.postpad-post-img-image{
+  border-radius: 50%;
+}
+
+#post {
+  margin-bottom: 75px;
+}
+
+footer {
+  text-align: center;
+  padding: 10px 0;
+  position: fixed; /* Fixed positioning */
+  bottom: 0; /* Stick to the bottom */
+  left: 0;
+  width: 100%; /* Full width */
+}
+
+#close-cookie-notice {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+#cookie-notice{
+  display: none;
+}
+
+.bottomMessage{
+  color: rgb(71, 71, 71);
+}
+
+button.nav-link.active{
+  color: #10023b !important;
+}
+
+button.nav-link{
+  color: #c8c7c9 !important;
+}
+
+.profilecounters{
+  width: 50%;
+}
+
+.profilecounters tr th{
+  padding-left: 1%;
+  padding-right: 1%;
+}
+
+.btn-primary{
+  background-color: #413172 !important;
+  border-color: #10023b !important;
+}
+
+.sharebutton{
+  cursor: pointer;
+}
+
+.ql-editor{
+  background-color: white !important;
+}
+
+.ql-toolbar{
+  background-color: white !important;
+}
+
+#advancedInputTab{
+  border-radius: 5% !important;
+}
+
+#postpad-announcement{
+  display: none;
+}
+
+
+/*@media(min-width: 992px){
+  .postpad-post-img-image{
+    max-width: 100%;
+  }
+}
+@media(max-width: 991px){
+  .postpad-post-img-image{
+    max-width: 20%;
+  }
+}*/

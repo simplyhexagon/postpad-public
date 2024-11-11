@@ -1,0 +1,21 @@
+version: "3"
+services:
+  postpad:
+    container_name: 'postpad'
+    image: 'webserver:v2'
+    ports:
+      - "8222:80"
+    volumes:
+      - './htroot:/var/www/html'
+      - './php.ini:/usr/local/etc/php/php.ini'
+    restart: always
+  postpad-db:
+    container_name: 'postpad-db'
+    image: 'mariadb'
+    ports:
+      - '43306:3306'
+    volumes:
+      - './data:/var/lib/mysql'
+    environment:
+      - MARIADB_ROOT_PASSWORD=root
+    restart: always
