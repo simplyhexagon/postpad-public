@@ -76,6 +76,10 @@ I put up this repo for the reason that someone might find it useful and spin up 
 
 For features planned, check `TODO.md`, for the historic changelog, check `CHANGELOG.md`
 
+`minify-css.py` can be used to minify the CSS file
+
+The `inviteCodeGenMultiThread` executable (compiled for Linux), in `/src/invite-code-gen` can be used to create invite codes, it the platform operates in invite-only mode.
+
 ### Contact
 For inquiries or permissions beyond the scope of the license specified in `LICENSE.md`, please contact *Balázs György Markgruber* at:
 - Discord: (at) simplyhexagon

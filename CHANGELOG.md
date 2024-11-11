@@ -1,7 +1,26 @@
 # CHANGELOG
 
 ### 2024-11-11
-Project now available on GitHub
+Project now officially available on GitHub
+
+### 2024-02-15
+- Removed `cw_gore` from `posts` table because I realised we don't allow that lol
+- Changed `cw_nudity` to `cw_nsfw` in database
+- Implemented post bluring if the post is marked as "Not Safe For Work", or if it has a general content warning
+- Added invite code generator (requires `libsodium`)
+- Started working on "Invite Only" features
+
+### 2024-02-14
+*Valentine's day... blegh*
+- Added python script to minify CSS (could be useful for future use)
+- Added character counter to Quill formatted posing
+- Started working on Content Warning checkboxes
+- Quill posts will be managed as "long posts" from now on
+
+### 2024-02-12
+- Announcement loader issues fixed (semantic issue in logic)
+- Removed `d-none` class label from announcement box, managed with style.display none/block
+- Removed `console.log`s used for debugging
 
 ### 2024-02-05
 - Added content warning columns to post table

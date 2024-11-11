@@ -47,8 +47,7 @@ CREATE TABLE `posts` (
   `views` int(11) NOT NULL DEFAULT 0,
   `timestamp` int(20) NOT NULL,
   `cw_general` int(1) NOT NULL DEFAULT 0,
-  `cw_nudity` int(1) NOT NULL DEFAULT 0,
-  `cw_gore` int(1) NOT NULL DEFAULT 0,
+  `cw_nsfw` int(1) NOT NULL DEFAULT 0,
   `reply_to` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`));
 
@@ -76,6 +75,14 @@ CREATE TABLE `bans` (
   `ispermanent` INT(1) NOT NULL DEFAULT 0,
   `expires` DATETIME NOT NULL,
   PRIMARY KEY (`id`));
+
+CREATE TABLE `invitecodes` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `invitecode` VARCHAR(35) NOT NULL,
+  `used` INT(1) NOT NULL DEFAULT 0,
+  `user` INT(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`));
+
 
 CREATE TABLE `logs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
