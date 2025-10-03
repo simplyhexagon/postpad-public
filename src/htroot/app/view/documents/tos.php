@@ -41,8 +41,8 @@
                             Since <i>PostPad</i> is operated out of Hungary, users have to abide by the copyright law(s) and copyright act(s) of the country.
                             <br>For more information, you can read the following document:
                             <br>
-                            <a class="hyperlinkOverride" href="/public/res/doc/copyright-english.pdf">Act LXXVI of 1999 on copyright (in english)</a> <br>
-                            <a class="hyperlinkOverride" href="/public/res/doc/copyright-magyar.pdf">1999. évi LXXVI. törvény a szerzői jogról (magyar nyelven)</a>
+                            <a class="hyperlinkOverride" href="/public/res/doc/copyright-english.pdf" target="_blank">Act LXXVI of 1999 on copyright (in english)</a> <br>
+                            <a class="hyperlinkOverride" href="/public/res/doc/copyright-magyar.pdf" target="_blank">1999. évi LXXVI. törvény a szerzői jogról (magyar nyelven)</a>
                         </p>
                     </li>
                     <li>

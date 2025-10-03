@@ -40,11 +40,10 @@ Input params:
 
 ```json
 {
-    "called":"explorepage",
-    "response":"ok",
-    "content":{
-        "post_(id of post)":{
-            "postid":"(id of post)",
+    "called": "explorepage",
+    "response": "ok",
+    "posts": {
+        "(id of post)": {
             "authorid":"(id of post's author)",
             "authoruname":"(username of author)",
             "authordname":"(displayed name of author)",
@@ -53,12 +52,14 @@ Input params:
             "timestamp":"(UNIX timestamp of post's creation in GMT)",
             "commentcount":"(number of comments on post)",
             "rtcount":"(number of reposts)",
-            "likecount":"(number of likes)"
-        },
-        "post_(id of post)":{
-            (content of another post)
+            "likecount":"(number of likes)",
+            "cw_general": "(General Content Warning, 1 if true, 0 if false)",
+            "cw_nsfw": "(NSFW Content Warning, 1 if true, 0 if false)",
+            "reply_to": "(ID of another post, if this post is a reply to it)"
         }
-        
+        "(id of previous post)"{
+            // Content of another post
+        }
     }
 }
 ```

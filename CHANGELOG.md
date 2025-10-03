@@ -1,7 +1,16 @@
 # CHANGELOG
 
+### 2024-12-19
+- Reorganised GitLab filetree to match the GitHub file tree (easier porting)
+- Default PFP now in repo, because it was missing due to misconfigured .gitignore
+- Minor API rework
+- Copyright documents in ToS now open on a new tab (`_blank`)
+- Posts are now stored in a single table, instead of separate header and content
+- Content warning checkboxes now reset after pressing "Post!"
+- When a user changes their profile picture, the old one gets deleted from the server
+
 ### 2024-11-11
-Project now officially available on GitHub
+Project now officially available on [GitHub](https://github.com/balika0105/postpad-public)
 
 ### 2024-02-15
 - Removed `cw_gore` from `posts` table because I realised we don't allow that lol

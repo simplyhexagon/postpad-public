@@ -94,7 +94,7 @@
                 array_push($updateStatements, "website = '{$website}'");
             }
             if($profilePicture != NULL){
-                $pfppath = $this->pfpchange($profilePicture);
+                $pfppath = $this->pfpchange($profilePicture, $oldStuff["pfppath"]);
                 if($pfppath != false){
                     $pfp_change = true;
                 }
@@ -155,7 +155,7 @@
                 }
             } 
         }
-        private function pfpchange($profilePicture){
+        private function pfpchange($profilePicture, $oldPfpPath){
             if($profilePicture != NULL && $profilePicture['error'] === UPLOAD_ERR_OK){
                 //Processing new pfp
                 $fileType = $profilePicture['type'];
@@ -184,6 +184,10 @@
 
                             // Move the uploaded file to the target directory
                             if (move_uploaded_file($tmpPath, SITE_ROOT . $targetFilePath)) {
+                                //Delete the old pfp from the server
+                                unlink(SITE_ROOT . $oldPfpPath);
+
+                                //When finished, return the new pfp
                                 return $targetFilePath;
                             } else {
                                 echo "imguploadinternal";

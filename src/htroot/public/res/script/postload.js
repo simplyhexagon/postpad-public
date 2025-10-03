@@ -73,6 +73,8 @@ function resetOffset(){
 }
 
 function resetPosts(){
+    document.getElementById("cw-general-check").checked = false;
+    document.getElementById("cw-nsfw-check").checked = false;
     resetOffset();
     countCharacters();
     document.getElementById("everypost").innerHTML = "";

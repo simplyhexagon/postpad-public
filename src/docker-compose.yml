@@ -1,4 +1,3 @@
-version: "3"
 services:
   postpad:
     container_name: 'postpad'
@@ -8,7 +7,7 @@ services:
     volumes:
       - './htroot:/var/www/html'
       - './php.ini:/usr/local/etc/php/php.ini'
-    restart: always
+    #restart: always
   postpad-db:
     container_name: 'postpad-db'
     image: 'mariadb'
@@ -18,4 +17,4 @@ services:
       - './data:/var/lib/mysql'
     environment:
       - MARIADB_ROOT_PASSWORD=root
-    restart: always
+    #restart: always

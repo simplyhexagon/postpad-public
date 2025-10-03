@@ -17,7 +17,7 @@
                 include "app/system/connect.php";
 
                 //id, type, posting_user, sharecount, reblogs, views, timestamp
-                $postquerystring = "SELECT id, type, posting_user, sharecount, reblogs, views, timestamp, cw_general, cw_nsfw FROM posts WHERE id > 0 AND reply_to IS NULL ORDER BY id DESC LIMIT {$maxvalue} OFFSET {$offset} ";
+                $postquerystring = "SELECT id, type, posting_user, content, sharecount, reblogs, views, timestamp, cw_general, cw_nsfw FROM posts WHERE id > 0 AND reply_to IS NULL ORDER BY id DESC LIMIT {$maxvalue} OFFSET {$offset} ";
                 //Checking if we are browsing a user's /user/* site
                 //If so, get their user ID
                 if(isset($_POST['user'])){
@@ -27,7 +27,7 @@
                     $result = $userq->get_result();
                     $user = $result->fetch_assoc();
                     
-                    $postquerystring = "SELECT id, type, posting_user, sharecount, reblogs, views, timestamp, cw_general, cw_nsfw FROM posts WHERE id > 0 AND posting_user = {$user["id"]} ORDER BY id DESC LIMIT {$maxvalue} OFFSET {$offset} ";
+                    $postquerystring = "SELECT id, type, posting_user, content, sharecount, reblogs, views, timestamp, cw_general, cw_nsfw FROM posts WHERE id > 0 AND posting_user = {$user["id"]} ORDER BY id DESC LIMIT {$maxvalue} OFFSET {$offset} ";
                 }
 
                 if($postq = $conn->query($postquerystring)){
@@ -48,9 +48,7 @@
                             $commentcount = $this->getcommentcount($postid);
                             $posttime = date('Y-m-d H:i:s', $postqr['timestamp']);
 
-                            //Query the contents of the post
-                            $postcontentq = $conn->query("SELECT content FROM postcontent WHERE postid = {$postid}");
-                            $realpostcontent = $postcontentq->fetch_assoc()['content'];
+                            $realpostcontent = $postqr['content'];
 
                             //Look for hyperlink elements, add the "hyperlinkOverride" class to them
                             $aPosition = strpos($realpostcontent, "<a ");
@@ -202,7 +200,7 @@
                 include "app/system/connect.php";
 
                 //id, type, posting_user, sharecount, reblogs, views, timestamp
-                $postquerystring = "SELECT id, type, posting_user, sharecount, reblogs, views, timestamp FROM posts WHERE id > 0 ORDER BY id DESC LIMIT {$maxvalue} OFFSET {$offset} ";
+                $postquerystring = "SELECT id, type, posting_user, content, sharecount, reblogs, views, timestamp, cw_general, cw_nsfw, reply_to FROM posts WHERE id > 0 ORDER BY id DESC LIMIT {$maxvalue} OFFSET {$offset} ";
                 //Checking if we are browsing a user's /user/* site
                 //If so, get their user ID
                 if(isset($_POST['user'])){
@@ -212,7 +210,7 @@
                     $result = $userq->get_result();
                     $user = $result->fetch_assoc();
                     
-                    $postquerystring = "SELECT id, type, posting_user, sharecount, reblogs, views, timestamp FROM posts WHERE id > 0 AND posting_user = {$user["id"]} ORDER BY id DESC LIMIT {$maxvalue} OFFSET {$offset} ";
+                    $postquerystring = "SELECT id, type, posting_user, content, sharecount, reblogs, views, timestamp, cw_general, cw_nsfw, reply_to FROM posts WHERE id > 0 AND posting_user = {$user["id"]} ORDER BY id DESC LIMIT {$maxvalue} OFFSET {$offset} ";
                 }
 
                 if($postq = $conn->query($postquerystring)){
@@ -223,9 +221,11 @@
                         $composedReply = Array(
                             "response" => "ok"
                         );
+                        $postList = Array();
 
                         while($postqr = $postq->fetch_assoc())
                         {
+                            
                             //Query info about the user to compose post content
                             //Not quite secure, TODO: make it more secure, fail safe
                             $uid = $postqr['posting_user'];
@@ -240,30 +240,35 @@
                                 $commentcount = 0;
                             }
 
-                            //Query the contents of the post
-                            $postcontentq = $conn->query("SELECT content FROM postcontent WHERE postid = {$postid}");
-                            $realpostcontent = $postcontentq->fetch_assoc()['content'];
+                            $realpostcontent = $postqr['content'];
 
+                            $reply_to = 0;
+                            if($postqr["reply_to"] != NULL)
+                                $reply_to = $postqr["reply_to"];
 
                             //COMPOSING THE POST
                             //This is the post itself
+
+                            //Composing PFP path
+                            $api_pfppath = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]" . $userdata['pfppath'];
                             $composedPost = Array(
-                                "response" => "ok",
-                                "postid" => "{$postid}",
                                 "authorid" => "{$uid}",
                                 "authoruname" => "{$userdata['username']}",
                                 "authordname" => "{$userdata['displayname']}",
-                                "authorpfp" => "{$userdata['pfppath']}",
+                                "authorpfp" => "{$api_pfppath}",
                                 "postbody" => "{$realpostcontent}",
                                 "timestamp" => "{$postqr['timestamp']}",
                                 "commentcount" => "{$commentcount}",
                                 "rtcount" => "0",
-                                "likecount" => "0"
+                                "likecount" => "0",
+                                "cw_general" => "{$postqr['cw_general']}",
+                                "cw_nsfw" => "{$postqr['cw_nsfw']}",
+                                "reply_to" => "{$reply_to}"
                             );
 
-                            $composedReply = $composedReply + Array("post_{$postid}" => $composedPost);
-
+                            $postList = $postList + Array("{$postid}" => $composedPost);
                         }
+                        $composedReply = $composedReply + Array("posts" => $postList);
                     }
                     else if($postq->num_rows == 0 && isset($_POST['user']) && $offset == 0){
                         $composedReply = Array(
@@ -322,40 +327,17 @@
             }
 
             $timestamp = time();
-            $newpostq = $conn->prepare("INSERT INTO posts (type, posting_user, timestamp, cw_general, cw_nsfw) VALUES (?, ?, ?, ?, ?)");
-            $newpostq->bind_param("iiiii", $posttype, $userid, $timestamp, $cw_general, $cw_nsfw);
+            $newpostq = $conn->prepare("INSERT INTO posts (type, posting_user, content, timestamp, cw_general, cw_nsfw) VALUES (?, ?, ?, ?, ?, ?)");
+            $newpostq->bind_param("iisiii", $posttype, $userid, $postcontent, $timestamp, $cw_general, $cw_nsfw);
 
             if($newpostq->execute()){
-                //We managed to create the post header, hurray!
-                $postid = $conn->insert_id;
+                //Closing connections, finalising and exiting
+                $newpostq->close();
+                $conn->close();
 
-                //Inserting the post content
-                $newpost_contentq = $conn->prepare("INSERT INTO postcontent (postid, posting_user, content) VALUES (?, ?, ?)");
-                $newpost_contentq->bind_param("iis", $postid, $userid, $postcontent);
-                if($newpost_contentq->execute()){
-                    //Closing connections, finalising and exiting
-                    $newpost_contentq->close();
-                    $newpostq->close();
-                    $conn->close();
-
-                    unset($newpost_contentq);
-                    unset($newpostq);
-                    echo "ok";
-                    exit();
-
-                }
-                else{
-                    //Everything is burning omg, return with a failure
-                    $this->logger(2, "postmanager/newpost()", "Failed to create new post: " . $conn->error);
-                    $newpost_contentq->close();
-                    $newpostq->close();
-                    $conn->close();
-
-                    unset($newpost_contentq);
-                    unset($newpostq);
-                    echo "fail";
-                    die();
-                }
+                unset($newpostq);
+                echo "ok";
+                exit();
             }
             else{
                 //Everything is burning omg
@@ -375,7 +357,7 @@
 
             $fullpostA = Array();
 
-            $getfullpost = $conn->prepare("SELECT posts.id AS id, posts.type AS type, posts.posting_user AS posting_user, posts.sharecount AS sharecount, posts.reblogs AS reblogs, posts.views AS views, posts.timestamp AS timestamp, users.username AS username, users.displayname AS displayname, users.isuserstaff AS isuserstaff, users.isuserverified AS isuserverified, users.isuserdeveloper AS isuserdeveloper, users.isuserpatron AS isuserpatron, users.pfppath AS pfppath, users.privateprofile AS privateprofile, postcontent.content AS content, posts.reply_to AS reply_to FROM posts JOIN users ON posts.posting_user = users.id JOIN postcontent ON postcontent.postid = posts.id WHERE posts.id = ?");
+            $getfullpost = $conn->prepare("SELECT posts.id AS id, posts.type AS type, posts.posting_user AS posting_user, posts.sharecount AS sharecount, posts.reblogs AS reblogs, posts.views AS views, posts.timestamp AS timestamp, posts.content AS content, posts.reply_to AS reply_to, users.username AS username, users.displayname AS displayname, users.isuserstaff AS isuserstaff, users.isuserverified AS isuserverified, users.isuserdeveloper AS isuserdeveloper, users.isuserpatron AS isuserpatron, users.pfppath AS pfppath, users.privateprofile AS privateprofile FROM posts JOIN users ON posts.posting_user = users.id WHERE posts.id = ?");
             $getfullpost->bind_param("i", $postid);
             $getfullpost->execute();
             $result = $getfullpost->get_result();
@@ -451,7 +433,7 @@
             
                 //comments: userid, timestamp, comment
                 //users: username, displayname, isuserstaff, isuserverified, isuserdeveloper, isuserpatron, pfppath, privateprofile
-                $querystring = "SELECT posts.id AS commentid, users.username AS username, users.displayname AS displayname, users.isuserstaff AS isuserstaff, users.isuserverified AS isuserverified, users.isuserdeveloper AS isuserdeveloper, users.isuserpatron AS isuserpatron, users.pfppath AS pfppath, users.privateprofile AS privateprofile, posts.timestamp AS timestamp, postcontent.content AS content FROM posts JOIN users ON posts.posting_user = users.id JOIN postcontent ON posts.id = postcontent.postid WHERE posts.reply_to = {$postid} ORDER BY posts.id DESC LIMIT {$maxvalue} OFFSET {$offset}";
+                $querystring = "SELECT posts.id AS commentid, users.username AS username, users.displayname AS displayname, users.isuserstaff AS isuserstaff, users.isuserverified AS isuserverified, users.isuserdeveloper AS isuserdeveloper, users.isuserpatron AS isuserpatron, users.pfppath AS pfppath, users.privateprofile AS privateprofile, posts.timestamp AS timestamp, posts.content AS content FROM posts JOIN users ON posts.posting_user = users.id WHERE posts.reply_to = {$postid} ORDER BY posts.id DESC LIMIT {$maxvalue} OFFSET {$offset}";
                 if($getcomments = $conn->query($querystring)){
                     if($getcomments->num_rows > 0){
                         //If we have comments, do the processing
@@ -582,38 +564,17 @@
                 $content = nl2br(htmlspecialchars($content, ENT_QUOTES, 'UTF-8'));
 
                 $timestamp = time();
-                $newcommentq = $conn->prepare("INSERT INTO posts (type, posting_user, timestamp, reply_to) VALUES (?, ?, ?, ?)");
-                $newcommentq->bind_param("iiii", $posttype, $userid, $timestamp, $reply_to);
+                $newcommentq = $conn->prepare("INSERT INTO posts (type, posting_user, content, timestamp, reply_to) VALUES (?, ?, ?, ?, ?)");
+                $newcommentq->bind_param("iisii", $posttype, $userid, $content, $timestamp, $reply_to);
 
                 if($newcommentq->execute()){
-                    //Created post header
-                    $postid = $conn->insert_id;
+                    //Post content stored, finalising
+                    $newcommentq->close();
+                    $conn->close();
 
-                    $newcomment_contentq = $conn->prepare("INSERT INTO postcontent (postid, posting_user, content) VALUES (?, ?, ?)");
-                    $newcomment_contentq->bind_param("iis", $postid, $userid, $content);
-                    if($newcomment_contentq->execute()){
-                        //Post content stored, finalising
-                        $newcomment_contentq->close();
-                        $newcommentq->close();
-                        $conn->close();
-
-                        unset($newcomment_contentq);
-                        unset($newcommentq);
-                        echo "ok";
-                        exit();
-                    }
-                    else{
-                        //Failed to insert content
-                        $this->logger(2, "postmanager/newpost()", "Failed to create new post: " . $conn->error);
-                        $newcomment_contentq->close();
-                        $newcommentq->close();
-                        $conn->close();
-
-                        unset($newcomment_contentq);
-                        unset($newcommentq);
-                        echo "fail";
-                        die();
-                    }
+                    unset($newcommentq);
+                    echo "ok";
+                    exit();
                 }
                 else{
                     //Failed to create post header

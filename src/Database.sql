@@ -42,6 +42,7 @@ CREATE TABLE `posts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` int(1) NOT NULL DEFAULT 0 COMMENT '0-short,1-long,2-reblog',
   `posting_user` int(11) NOT NULL,
+  `content` varchar(8000) NOT NULL,
   `sharecount` int(11) NOT NULL DEFAULT 0,
   `reblogs` int(11) NOT NULL DEFAULT 0,
   `views` int(11) NOT NULL DEFAULT 0,
@@ -49,14 +50,6 @@ CREATE TABLE `posts` (
   `cw_general` int(1) NOT NULL DEFAULT 0,
   `cw_nsfw` int(1) NOT NULL DEFAULT 0,
   `reply_to` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`));
-
-
-CREATE TABLE `postcontent` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `postid` INT NOT NULL,
-  `posting_user` INT NOT NULL,
-  `content` VARCHAR(8000) NOT NULL,
   PRIMARY KEY (`id`));
 
 CREATE TABLE `userlogins` (

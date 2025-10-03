@@ -1,5 +1,5 @@
 <?php
-    define("APP_VERSION", "0.12.5");
+    define("APP_VERSION", "0.13.0");
     define("APP_NAME", "PostPad");
 
     //Use this variable to determine if you're working on a devbuild or not
